@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zhongruan.etc.dao.IUserInfoDao">
+
+    <select id="selectById" parameterType="Integer" resultType="UserInfo">
+        select *
+        from userinfo
+        where id = #{id}
+    </select>
+
+    <select id="selectByUserName" parameterType="String" resultType="UserInfo">
+        select id, username, password
+        from userinfo
+        where username = #{username}
+    </select>
+
+    <select id="listAllUser" resultType="UserInfo">
+        select * from userinfo
+        <where>
+            <if test="keyword != null and keyword != ''">
+                and username like CONCAT('%',#{keyword},'%')
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertAndGetId" useGeneratedKeys="true" keyProperty="id" parameterType="UserInfo">
+        insert into userinfo(username, password)
+        values (#{username}, #{password})
+    </insert>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete
+        from userinfo
+        where id = #{id}
+    </delete>
+
+    <update id="updateById" parameterType="UserInfo">
+        update userinfo
+        set username=#{username},
+            password=#{password}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteAllByIds" parameterType="list">
+        delete from userinfo where id in
+        <foreach collection="list" open="(" close=")" item="id" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.zhongruan.etc.dao.IRoleDao">
+
+    <select id="listRole" resultType="Role">
+        select *
+        from role
+    </select>
+
+    <insert id="insertAndGetId" parameterType="Role">
+        insert into role(role_name, role_desc)
+        values (#{roleName}, #{roleDesc})
+    </insert>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete
+        from role
+        where id = #{id}
+    </delete>
+
+    <select id="selectById" parameterType="Integer" resultType="Role">
+        select *
+        from role
+        where id = #{id}
+    </select>
+
+    <select id="selectByRoleName" parameterType="String" resultType="Role">
+        select *
+        from role
+        where role_name = #{roleName}
+    </select>
+
+    <update id="updateById" parameterType="Role">
+        update role
+        set role_name=#{roleName},
+            role_desc=#{roleDesc}
+        where id = #{id}
+    </update>
+
+    <select id="selectByUid" parameterType="int" resultType="Role">
+        select *
+        from role
+        where id in (select rid from user_role where uid = #{uid})
+    </select>
+
+</mapper>
